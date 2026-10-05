@@ -16,6 +16,10 @@ https://fr.wikipedia.org/* : permet de rechercher les informations et illustrati
 
 ## Données utilisées
 
+Catégories cochées dans le brouillon Store : informations permettant d’identifier personnellement l’utilisateur, informations d’authentification, activité de l’utilisateur et contenu du site Web. Les trois engagements d’usage limité sont cochés ; aucun usage publicitaire, vente de données, solvabilité ou prêt.
+
+Identifiants et activité : les pseudonymes nécessaires aux échanges/enchères sont affichés, et l’identifiant du compte existant sert à consulter ses succès. Les réponses des API WikiMasters utiles aux prix, collections et tirages sont observées pour mettre à jour les outils et statistiques locales. Aucun suivi général de la souris, du clavier ou des autres sites.
+
 Contenu de sites Web : cartes, images, métadonnées, collection, ventes, moyennes de prix, récompenses et compteurs nécessaires aux outils WikiMasters. Les sauvegardes restent dans le navigateur ou dans le dossier choisi.
 
 Informations d’authentification : la session du site est réutilisée pour ses API. Certains jetons déjà fournis par WikiMasters sont observés et conservés temporairement en mémoire pour les requêtes du même site et de son service Supabase. Aucun mot de passe n’est demandé ou enregistré par l’extension ; ces jetons ne sont pas inclus dans les sauvegardes et ne sont pas envoyés à un serveur du fork.
@@ -33,3 +37,5 @@ Politique publique du fork : https://github.com/Clascheurduturfu/wiki-master-too
 ## Instructions de test proposées
 
 Installer l’extension seule, sans l’ancienne version, puis ouvrir WikiMasters et se connecter avec son propre compte de test. Dans Collection, vérifier le chargement des moyennes, ouvrir Plus chères, puis Discard sans confirmer de défausse. Ouvrir Mes enchères et Succès ; les lectures n’engagent pas de mise et ne réclament pas de récompense sans clic. Le son de notification attend une interaction réelle dans la page. Les opérations qui modifient les cartes, enchères ou récompenses nécessitent les contrôles prévus. Aucun compte privé de l’utilisateur n’est fourni aux examinateurs.
+
+Les instructions supplémentaires sont enregistrées dans le tableau de bord (460 caractères). Les champs de connexion restent vides : un compte de test dédié n’a pas été fourni pour ce brouillon.

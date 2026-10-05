@@ -1,6 +1,8 @@
 # Wiki Master Toolkit · v1.0
 
-Fork indépendant de WikiMastersTools-kzfamily, avec les adaptations Atlas et le correctif des notifications audio. Les prix et statistiques existants sont conservés. Voir [ATTRIBUTION.md](ATTRIBUTION.md), [PRIVACY.md](PRIVACY.md) et le dossier `../releases/wiki-master-toolkit-1.0/` pour le brouillon de publication.
+Fork indépendant de WikiMastersTools-kzfamily, avec les adaptations Atlas et le correctif des notifications audio. Les prix et statistiques existants sont conservés. Voir [ATTRIBUTION.md](ATTRIBUTION.md), [PRIVACY.md](PRIVACY.md) et [store/STORE-LISTING.fr.md](store/STORE-LISTING.fr.md) pour la fiche et l’état du brouillon Chrome Web Store.
+
+Les modifications Toolkit sont sur la branche `codex/wiki-master-toolkit-1.0` ; `main` conserve l’historique d’origine. Pour tester cette version dans Chrome, télécharger ou cloner cette branche et charger le dossier contenant `manifest.json` comme extension non empaquetée. Le produit n’est pas encore publié dans le Store. Les captures du dossier `store/` utilisent des données d’exemple.
 
 La documentation d’origine ci-dessous est conservée pour attribution. Les anciens noms et numéros décrivent les versions précédentes.
 

@@ -2,7 +2,7 @@
 
 Version : 1.0
 Langue : français
-Catégorie proposée : outils / productivité, selon les catégories disponibles dans le tableau de bord.
+Catégorie : Outils
 
 ## Résumé
 
@@ -44,6 +44,8 @@ Wiki Master Toolkit est un fork indépendant de WikiMastersTools-kzfamily, cré�
 
 Cette version ajoute notamment le cache permanent, la synchronisation locale, le suivi d’enchères, les outils de défausse et une interface réorganisée. Elle n’est pas affiliée à WikiMasters et ne constitue pas une publication officielle du projet d’origine.
 
+Code du fork et support : https://github.com/Clascheurduturfu/wiki-master-toolkit/tree/codex/wiki-master-toolkit-1.0
+
 ## Assets
 
 • Icône : extension/icons/icon128.png, également fournie séparément dans ce dossier.
@@ -53,6 +55,16 @@ Cette version ajoute notamment le cache permanent, la synchronisation locale, le
 
 ## État du brouillon
 
-La fiche ci-dessus et le ZIP sont préparés localement. Le brouillon n’a pas été enregistré dans le tableau de bord : le contrôle de Chrome interdit l’automatisation de la galerie d’extensions, même sur le tableau de bord déjà ouvert. Aucun envoi pour examen et aucune publication n’ont été effectués.
+Le 5 octobre 2026, le brouillon a été créé et enregistré via le contrôle natif de Chrome sous l’éditeur Xinolab Corp. Le paquet version 1.0, la description française et les crédits, la catégorie Outils, la langue française, l’icône, trois captures, le visuel promotionnel, les liens du fork et du support, les déclarations de confidentialité et les instructions de test sont enregistrés. Les sections ont été rouvertes pour vérifier leur conservation. Aucun envoi pour examen et aucune publication.
 
-Avant l’envoi pour examen : vérifier l’autorisation de redistribuer le code d’origine, héberger la politique de confidentialité du fork sur une URL publique, et adapter le chargement facultatif du widget Turnstile aux règles de code distant du Store. Les déclarations proposées dans PRIVACY-DRAFT.fr.md reflètent ce code ; ne pas déclarer « aucun code distant » tant que ce chargement existe.
+Identifiant : hngfekfnalckbmibfghffahkfhbhbpeh
+
+Tableau de bord : https://chrome.google.com/webstore/devconsole/c6132970-394c-4221-9808-cb019c476a97/hngfekfnalckbmibfghffahkfhbhbpeh/edit
+
+Politique publique : https://github.com/Clascheurduturfu/wiki-master-toolkit/blob/codex/wiki-master-toolkit-1.0/PRIVACY.md
+
+Réglages de distribution conservés : sans frais, public, toutes les régions. Ce choix décrit une éventuelle publication future ; le produit reste en brouillon.
+
+Paquet téléversé : wiki-master-toolkit-1.0.zip, SHA256 10B314C02A5150458F7B3557378F3762DAA7A1A6A18ACC17EE7DD08F3E096AF6.
+
+Avant soumission : le contrôle du tableau de bord demande d’ajouter et de valider l’adresse e-mail de contact de l’éditeur dans Paramètres. Les identifiants d’un compte de test dédié sont encore à fournir pour l’examen des fonctions connectées ; aucun compte personnel n’a été partagé. L’autorisation de redistribution du code d’origine reste à obtenir. Le chargement facultatif Turnstile est déclaré comme code distant, avec une explication de son contexte MAIN et une demande d’évaluation de l’exception pertinente ; aucune acceptation de cette exception n’est présumée. Si le Store refuse ce montage, adapter le flux de vérification avant soumission.

@@ -4,7 +4,7 @@
   registry.collectionBulk = {
     create(runtime) {
       const {
-        CACHE_TTL, BULK_RARITY_LAST_LOAD_KEY, ALL_COLLECTION_KEY, RARITIES,
+        BULK_RARITY_LAST_LOAD_KEY, ALL_COLLECTION_KEY, RARITIES,
         DEFAULT_RARE_RARITIES, isCollectionPage, normalizeTitle, cacheKey,
         storageGet, storageSet, reportError, createSponsorNote, isContextInvalidatedError
       } = runtime.core;
@@ -85,7 +85,7 @@
         const rankingEnabled = runtime.settings.isEnabled('ranking');
         const compactEnabled = runtime.settings.isEnabled('compactMode');
 
-        if (!bulkEnabled && !rankingEnabled && !compactEnabled) return;
+        // File sync and discard remain accessible when optional price tools are off.
 
         const h1 = [...document.querySelectorAll('h1')].find((el) => normalizeTitle(el.textContent) === 'Collection');
         if (!h1) return;
@@ -96,6 +96,11 @@
         const bar = document.createElement('div');
         bar.id = 'wm-tools-bar';
         bar.className = 'wm-tools-bar';
+
+        const version = document.createElement('small');
+        version.textContent = `WM Toolkit v${runtime.core.VERSION}`;
+        version.title = 'Prix conservés sans expiration ; nouvelles cartes chargées automatiquement';
+        bar.append(version);
 
         if (bulkEnabled) {
           bulkButton = document.createElement('button');
@@ -145,19 +150,7 @@
         const onlyUnloaded = Boolean(selection.onlyUnloaded);
         const now = Date.now();
 
-        const forceRarities = new Set();
-        if (!onlyUnloaded) {
-          const recentRarities = selected.filter((rarity) => {
-            const timestamp = Number(lastLoads[rarity]) || 0;
-            return timestamp > 0 && now - timestamp < CACHE_TTL;
-          });
-
-          if (recentRarities.length > 0) {
-            const confirmed = await showReloadConfirmation(recentRarities, lastLoads);
-            if (!confirmed) return;
-            recentRarities.forEach((rarity) => forceRarities.add(rarity));
-          }
-        }
+        const forceRarities = new Set(onlyUnloaded ? [] : selected);
 
         bulkActive = true;
         bulkSelectedRarities = new Set(selected);
@@ -188,11 +181,11 @@
 
           const text = document.createElement('p');
           text.className = 'wm-rarity-explanation';
-          text.textContent = 'Sélectionne seulement les raretés qui t’intéressent. Le gros avantage, c’est de ne pas perdre du temps à charger les prix de toutes les cartes communes.';
+          text.textContent = 'Choisis les raretés à charger. Les nouvelles cartes visibles se chargent déjà automatiquement.';
 
           const tip = document.createElement('p');
           tip.className = 'wm-rarity-tip';
-          tip.textContent = 'Exemple : L / UR / SR / R tous les jours, puis PC / C seulement une fois par semaine.';
+          tip.textContent = 'Les prix sont conservés sans expiration. Charge toutes les raretés une fois ; les nouvelles cartes seront chargées automatiquement.';
 
           const presets = document.createElement('div');
           presets.className = 'wm-rarity-presets';
@@ -210,7 +203,7 @@
             }
           };
 
-          let onlyUnloaded = false;
+          let onlyUnloaded = true;
 
           const makePreset = (label, rarities) => {
             const button = document.createElement('button');
@@ -230,6 +223,7 @@
 
           const missingInput = document.createElement('input');
           missingInput.type = 'checkbox';
+          missingInput.checked = true;
 
           const missingText = document.createElement('span');
           missingText.className = 'wm-missing-text';
@@ -245,28 +239,19 @@
 
           const updateMissingState = () => {
             onlyUnloaded = missingInput.checked;
+            const submit = modal.querySelector('[data-wm-price-submit]');
+            if (submit) submit.textContent = onlyUnloaded ? 'Charger les prix manquants' : 'Actualiser ces raretés';
             missingOption.classList.toggle('is-selected', onlyUnloaded);
           };
 
           missingInput.addEventListener('change', updateMissingState);
 
-          const missingPreset = document.createElement('button');
-          missingPreset.type = 'button';
-          missingPreset.className = 'wm-tool-button wm-rarity-preset';
-          missingPreset.textContent = 'Non chargées';
-          missingPreset.addEventListener('click', () => {
-            selected.clear();
-            RARITIES.forEach((rarity) => selected.add(rarity));
-            updateChecks();
-            missingInput.checked = true;
-            updateMissingState();
-          });
+          updateMissingState();
 
           presets.append(
             makePreset('Rares', ['L', 'UR', 'SR', 'R']),
             makePreset('Courantes', ['PC', 'C']),
-            makePreset('Toutes', RARITIES),
-            missingPreset
+            makePreset('Toutes', RARITIES)
           );
 
           for (const rarity of RARITIES) {
@@ -309,8 +294,9 @@
 
           const confirm = document.createElement('button');
           confirm.type = 'button';
-          confirm.className = 'wm-tool-button';
-          confirm.textContent = 'Charger ces raretés';
+          confirm.dataset.wmPriceSubmit = '1';
+          confirm.className = 'wm-tool-button wm-primary-button';
+          confirm.textContent = 'Charger les prix manquants';
 
           const close = (value) => {
             overlay.remove();
@@ -394,55 +380,6 @@
         return remaining ? `${hours} h ${remaining} min` : `${hours} h`;
       }
 
-      function showReloadConfirmation(recentRarities, lastLoads) {
-        return new Promise((resolve) => {
-          const overlay = document.createElement('div');
-          overlay.className = 'wm-modal-overlay';
-
-          const modal = document.createElement('div');
-          modal.className = 'wm-modal wm-confirm-modal';
-
-          const title = document.createElement('h2');
-          title.textContent = 'Recharger des prix déjà récents ?';
-
-          const text = document.createElement('p');
-          const details = recentRarities
-            .map((rarity) => `${rarity} (il y a ${humanElapsed(Number(lastLoads[rarity]) || Date.now())})`)
-            .join(', ');
-          text.textContent = `Ces raretés ont déjà été chargées il y a moins de 24 h : ${details}. Les relancer force de nouvelles requêtes pour leurs cartes. Par prudence, évite de le faire trop souvent si ce n’est pas nécessaire. Recharger quand même ces raretés ?`;
-
-          const actions = document.createElement('div');
-          actions.className = 'wm-modal-actions';
-
-          const cancel = document.createElement('button');
-          cancel.type = 'button';
-          cancel.className = 'wm-tool-button wm-secondary-button';
-          cancel.textContent = 'Garder le cache';
-
-          const confirm = document.createElement('button');
-          confirm.type = 'button';
-          confirm.className = 'wm-tool-button wm-danger-button';
-          confirm.textContent = 'Recharger quand même';
-
-          const close = (value) => {
-            overlay.remove();
-            resolve(value);
-          };
-
-          cancel.addEventListener('click', () => close(false));
-          confirm.addEventListener('click', () => close(true));
-          overlay.addEventListener('click', (event) => {
-            if (event.target === overlay) close(false);
-          });
-
-          actions.append(cancel, confirm);
-          modal.append(title, text, actions);
-          overlay.append(modal);
-          document.body.append(overlay);
-        });
-      }
-
-
       window.addEventListener('wm-average-all-collection-progress', (event) => {
         if (!bulkActive || event.detail?.requestId !== bulkRequestId) return;
         const loadedPages = Number(event.detail.loadedPages) || 0;
@@ -466,7 +403,7 @@
 
         if (detail.complete) {
           storageSet({
-            [ALL_COLLECTION_KEY]: { fetchedAt, cards, complete: true }
+            [ALL_COLLECTION_KEY]: { fetchedAt, cards, complete: true, total: detail.total }
           });
         } else {
           // Keep every piece of collection metadata we have already seen.
@@ -498,7 +435,7 @@
 
         if (bulkOnlyUnloaded && selectedCards.length) {
           const cached = storageGet(selectedCards.map((card) => cacheKey(card.id)));
-          selectedCards = selectedCards.filter((card) => cached[cacheKey(card.id)] === undefined);
+          selectedCards = selectedCards.filter((card) => !runtime.core.isCacheEntryValid(cached[cacheKey(card.id)]) || cached[cacheKey(card.id)]?.ok !== true);
         }
 
         if (!selectedCards.length) {

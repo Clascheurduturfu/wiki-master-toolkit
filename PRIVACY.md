@@ -1,61 +1,39 @@
-# Politique de confidentialité — WikiMastersTools-kzfamily
+# Politique de confidentialité — Wiki Master Toolkit
 
-Dernière mise à jour : 24 septembre 2026
+Version 1.0 · Dernière mise à jour : 5 octobre 2026
 
-WikiMastersTools-kzfamily est un add-on créé par la kzfamily pour améliorer l'utilisation du site WikiMasters.
+Wiki Master Toolkit est un fork indépendant de WikiMastersTools-kzfamily. Cette politique décrit le fork ; les auteurs du projet d’origine ne sont pas les responsables de sa publication.
 
-## Données traitées
+## Données nécessaires aux outils
 
-L'extension traite uniquement les données nécessaires à ses fonctionnalités sur https://www.wiki-masters.com/, notamment :
+L’extension lit les cartes et informations de WikiMasters nécessaires aux fonctions activées : identifiants et noms de cartes, raretés, images, collection et protections, ventes, prix moyens, enchères suivies, succès et statistiques de tirage. Les préférences et sauvegardes sont conservées dans le navigateur. Les prix moyens réussis n’expirent pas automatiquement ; ils peuvent être actualisés manuellement. Aucune valeur future n’est garantie.
 
-- les identifiants de cartes ;
-- les titres des cartes ;
-- leur rareté ;
-- les images et métadonnées affichées par WikiMasters ;
-- les données de collection ;
-- les données de ventes et prix moyens fournies par l'API WikiMasters ;
-- les titres publics des articles Wikipédia lorsque l’extension cherche une image manquante.
+## Session existante
 
-Ces données correspondent au contenu affiché par WikiMasters et servent uniquement à fournir les fonctions de l’extension : prix moyens, outils de collection, statistiques de tirage, liens Wikipédia et remplacement visuel des images manquantes.
+Les API de WikiMasters sont appelées avec la session déjà ouverte sur le site. L’extension ne demande pas de mot de passe. Pour certaines fonctions, les en-têtes d’authentification déjà utilisés par le site sont observés et gardés temporairement en mémoire, puis réutilisés uniquement auprès de WikiMasters et de son service Supabase. Ils ne sont pas inclus dans les sauvegardes, dans les fichiers de synchronisation ou dans la base partagée Atlas.
 
-## Stockage local
+## Synchronisation facultative et sauvegardes
 
-L'extension utilise le stockage local du navigateur afin de mettre en cache certaines informations, notamment les prix moyens et les dates de dernière mise à jour.
+La synchronisation lit et écrit les prix et compteurs de tirage dans un dossier choisi et autorisé par l’utilisateur. Les fichiers ne contiennent ni cookies, ni jetons, ni paramètres de connexion. L’extension ne contacte aucun serveur de synchronisation du fork. Si un dossier Google Drive ou un autre dossier synchronisé est choisi, le logiciel de synchronisation transmet les fichiers selon sa propre politique. La référence du dossier est mémorisée dans le navigateur et l’accès peut être désactivé.
 
-Ce cache permet d'éviter des requêtes inutiles et d'améliorer les performances de l'extension.
+Dans Atlas uniquement, les prix de marché réussis sont également partagés entre ses panneaux dans une base SQLite locale contenant les identifiants de cartes, horodatages et moyennes par rareté. Les sessions, collections personnelles et statistiques de tirage restent distinctes.
 
-## Collecte et transmission
+## Services contactés
 
-L'extension :
+WikiMasters et son service Supabase reçoivent les requêtes nécessaires aux cartes, prix, enchères, paquets et succès. Wikipédia, Wikidata et Wikimedia peuvent recevoir des titres publics ou requêtes publiques pour les illustrations et familles ; ces requêtes sémantiques n’incluent pas les cookies WikiMasters. Pour certaines illustrations Pokémon, une recherche publique peut également contacter PokéAPI et charger l’image renvoyée par ce service, sans transmettre les jetons WikiMasters. Un widget de vérification demandé par WikiMasters peut contacter Cloudflare Turnstile ; son jeton reste temporaire et est envoyé seulement à l’API de vérification du site. Les liens externes explicites, notamment le crédit du projet d’origine, sont ouverts lorsqu’on clique dessus.
 
-- ne collecte pas de nom, adresse, adresse e-mail ou autre information permettant d'identifier personnellement l'utilisateur ;
-- ne collecte pas de mot de passe ou d'informations d'authentification ;
-- ne collecte pas d'informations financières ou de paiement ;
-- ne collecte pas de données de santé ;
-- ne collecte pas de localisation ;
-- ne collecte pas l'historique de navigation général de l'utilisateur ;
-- ne revend aucune donnée ;
-- n'utilise aucune donnée à des fins publicitaires ;
-- n'envoie aucune donnée utilisateur vers un serveur exploité par la kzfamily.
+## Actions et presse-papiers
 
-Les requêtes réseau effectuées par l’extension concernent principalement WikiMasters. Lorsqu’une carte n’a pas d’image, l’extension peut aussi envoyer le titre public de cette carte à l’API publique de Wikipédia en français afin de rechercher une miniature libre provenant de Wikimedia Commons. Ces requêtes sont faites sans cookie ni identifiant de compte et les images Wikimedia sont chargées sans référent.
+Copier une carte écrit l’image dans le presse-papiers après un clic ; l’extension ne lit pas son contenu. Une défausse exige un aperçu et une confirmation. Placer une vente ou réclamer des récompenses exige les boutons correspondants. L’ouverture automatique est facultative. Les vérifications humaines et restrictions du site ne sont pas contournées.
 
-## Utilisation des données
+## Pas de télémétrie du fork
 
-Les données traitées sont utilisées uniquement pour la fonctionnalité principale de l'extension : améliorer l'affichage et l'exploitation des informations de cartes sur WikiMasters.
+Aucun serveur du fork ne reçoit les données de collection, les jetons ou les statistiques. L’extension ne vend pas de données, n’utilise pas d’analyse publicitaire et ne collecte pas l’historique général de navigation, les informations de paiement, la localisation précise ou les données de santé. Le navigateur et les services visités appliquent leurs propres politiques.
 
-Les données ne sont ni vendues ni utilisées pour déterminer la solvabilité d'un utilisateur ou à des fins de prêt.
+## Conservation et suppression
 
-## Services tiers
-
-L'extension fonctionne avec le site WikiMasters et son API. L'utilisation de WikiMasters reste soumise aux propres conditions et règles de confidentialité de WikiMasters.
-
-Pour la fonctionnalité d’images manquantes, l’extension utilise l’API publique de Wikipédia en français et peut afficher des images hébergées par Wikimedia Commons. Seul le titre public de la carte est utilisé pour cette recherche ; aucun cookie WikiMasters ni identifiant de compte n’est transmis à Wikimedia.
-
-Le lien sponsorisé vers Twitch affiché par l'extension est un simple lien cliquable. L'extension n'envoie aucune donnée à Twitch tant que l'utilisateur ne clique pas sur ce lien.
+Les données restent disponibles jusqu’à leur suppression dans les outils du navigateur ou les fonctions prévues de l’extension. Désactiver la synchronisation conserve les fichiers et données existants. Un export de sauvegarde permet de préserver les prix et statistiques avant de supprimer les données du site. Les fichiers choisis et la base locale Atlas sont gérés séparément des données du navigateur.
 
 ## Contact
 
-Pour toute question concernant cette politique de confidentialité, vous pouvez ouvrir une issue sur le dépôt GitHub du projet :
-
-https://github.com/qkerman/WikiMastersTools-kzfamily
+Pour contacter le développeur de ce fork, utiliser les coordonnées de support indiquées sur sa fiche Chrome Web Store. Le dépôt d’origine est cité dans ATTRIBUTION.md et ne constitue pas le support de cette publication indépendante.

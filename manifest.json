@@ -1,46 +1,26 @@
 {
-  "manifest_version": 3,
-  "name": "WikiMasters - Prix moyen collection",
-  "version": "4.29.1",
-  "description": "Outils WikiMasters configurables : familles de cartes, prix moyens, collection, échanges, paquets, cartes full-art et Wikipédia.",
-  "permissions": [
-    "clipboardWrite"
-  ],
-  "host_permissions": [
-    "https://www.wiki-masters.com/*",
-    "https://www.wikidata.org/*",
-    "https://query.wikidata.org/*",
-    "https://fr.wikipedia.org/*"
-  ],
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "wikimasters-tools@kzfamily",
-      "data_collection_permissions": {
-        "required": [
-          "none"
-        ]
-      }
-    }
-  },
   "content_scripts": [
     {
-      "matches": [
-        "https://www.wiki-masters.com/*"
+      "css": [
+        "styles.css",
+        "theme-tracker.css",
+        "ui.css"
       ],
       "js": [
         "bootstrap.js"
       ],
-      "css": [
-        "styles.css",
-        "theme-tracker.css",
-        "my-bids.css"
+      "matches": [
+        "https://www.wiki-masters.com/*"
       ],
       "run_at": "document_start"
-    }
-  ],
-  "web_accessible_resources": [
+    },
     {
-      "resources": [
+      "matches": [
+        "https://www.wiki-masters.com/*"
+      ],
+      "world": "MAIN",
+      "run_at": "document_start",
+      "js": [
         "bridge/core.js",
         "bridge/collection.js",
         "bridge/packs.js",
@@ -48,29 +28,52 @@
         "bridge/marketplace.js",
         "bridge/prices.js",
         "page-bridge.js",
+        "sync-model.js",
+        "discard-model.js",
         "features/core.js",
         "features/settings.js",
         "features/image-resolver.js",
         "features/price-ui.js",
+        "features/shared-prices.js",
         "features/price-loader.js",
+        "features/file-sync.js",
         "features/card-extras.js",
         "features/pull-stats.js",
         "features/compact-mode.js",
         "features/trades.js",
         "features/modal-ui.js",
+        "features/pack-verification.js",
         "features/packs.js",
         "features/ranking.js",
         "features/collection-bulk.js",
+        "features/discard.js",
         "features/extra-tools.js",
+        "features/activity.js",
+        "features/workspace-ui.js",
         "features/theme-tracker.js",
-        "features/my-bids-logic.js",
-        "features/my-bids.js",
         "features/app.js",
         "content.js"
-      ],
-      "matches": [
-        "https://www.wiki-masters.com/*"
       ]
     }
-  ]
+  ],
+  "description": "Prix moyens, collection, paquets, enchères, succès et synchronisation locale pour WikiMasters. Fork indépendant de WikiMastersTools.",
+  "host_permissions": [
+    "https://www.wiki-masters.com/*",
+    "https://www.wikidata.org/*",
+    "https://query.wikidata.org/*",
+    "https://fr.wikipedia.org/*"
+  ],
+  "manifest_version": 3,
+  "name": "Wiki Master Toolkit",
+  "short_name": "WM Toolkit",
+  "permissions": [
+    "clipboardWrite"
+  ],
+  "version": "1.0",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
 }

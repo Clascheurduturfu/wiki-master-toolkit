@@ -20,7 +20,6 @@
         ranking: true,
         rankingSales: true,
         themeTracker: true,
-        myBids: true,
         compactMode: true,
         packRecap: true,
         pullStats: true,
@@ -64,13 +63,6 @@
           ]
         },
         {
-          title: 'Marché',
-          description: 'Outils pour suivre tes enchères.',
-          items: [
-            ['myBids', 'Afficher la page Mes enchères', 'Ajoute Mes enchères au menu latéral avec suivi des enchères, surenchère en un clic et alerte sonore sous 1 minute. Désactive cette option pour masquer entièrement la page et son entrée dans le menu.']
-          ]
-        },
-        {
           title: 'Paquets',
           description: 'Outils disponibles sur la page /pulls.',
           items: [
@@ -111,7 +103,7 @@
 
       function normalizeAutoOpenInterval(minValue, maxValue) {
         const clampMinutes = (value, fallback) => {
-          const numeric = value == null || value === '' ? NaN : Math.round(Number(value));
+          const numeric = Math.round(Number(value));
           if (!Number.isFinite(numeric)) return fallback;
           return Math.max(1, Math.min(10080, numeric));
         };
@@ -382,7 +374,7 @@
 
         const applyButton = document.createElement('button');
         applyButton.type = 'button';
-        applyButton.className = 'wm-tool-button';
+        applyButton.className = 'wm-tool-button wm-primary-button';
         applyButton.textContent = 'Appliquer';
         applyButton.addEventListener('click', () => {
           saveSettings(draft);
@@ -465,7 +457,7 @@
           button.id = 'wm-settings-button';
           button.type = 'button';
           button.className = 'wm-settings-launch';
-          button.title = 'Paramètres de WikiMastersTools';
+          button.title = 'Paramètres de Wiki Master Toolkit';
           button.setAttribute('aria-label', 'Ouvrir les paramètres de l’extension');
 
           const icon = document.createElement('span');

@@ -3,12 +3,10 @@
 
   registry.core = {
     create() {
-      const CACHE_TTL = 24 * 60 * 60 * 1000;
+      const VERSION = '1.0';
+      const CACHE_TTL = Infinity;
       const ERROR_CACHE_TTL = 60 * 1000;
-      const CACHE_CLEANUP_INTERVAL = 24 * 60 * 60 * 1000;
-      const CACHE_MAX_AGE = 30 * 24 * 60 * 60 * 1000;
-      const CACHE_CLEANUP_KEY = 'wm_avg_cache_cleanup_v1';
-      const CACHE_PREFIX = 'wm_avg_v4_';
+      const CACHE_PREFIX = 'wm_avg_v3_';
       const MAX_CONCURRENT = 3;
       const BULK_RARITY_LAST_LOAD_KEY = 'wm_bulk_rarity_last_load_v1';
       const ALL_COLLECTION_KEY = 'wm_all_collection_v1';
@@ -108,6 +106,8 @@
         } catch (error) {
           console.warn('[WM Average] localStorage indisponible', error);
           return false;
+        } finally {
+          if (key.startsWith(CACHE_PREFIX)) window.dispatchEvent?.(new CustomEvent('wm-file-sync-local-change', { detail: { key } }));
         }
       }
 
@@ -132,47 +132,30 @@
       }
 
       function isCacheEntryValid(entry, now = Date.now()) {
-        if (!entry || typeof entry.ok !== 'boolean' || !Number.isFinite(entry.fetchedAt)) return false;
-        if (!entry.averages || typeof entry.averages !== 'object' || Array.isArray(entry.averages)) return false;
-        const ttl = entry.ok === false
-          ? Math.min(5 * 60 * 1000, Math.max(ERROR_CACHE_TTL, Number(entry.retryAfterMs) || 0))
-          : CACHE_TTL;
-        const age = now - entry.fetchedAt;
-        return age >= 0 && age < ttl;
+        if (!entry || !Number.isFinite(Number(entry.fetchedAt)) || Number(entry.fetchedAt) <= 0) return false;
+        if (entry.ok === false) return now - Number(entry.fetchedAt) < ERROR_CACHE_TTL;
+        return entry.ok === true && entry.averages && typeof entry.averages === 'object'
+          && !Array.isArray(entry.averages);
       }
 
       function cleanupPriceCacheOnceDaily() {
-        const lastCleanup = Number(readLocalValue(CACHE_CLEANUP_KEY)) || 0;
-        const now = Date.now();
-        if (now - lastCleanup < CACHE_CLEANUP_INTERVAL) return;
+        // Successful prices have no expiry or automatic eviction in the Atlas fork.
+      }
 
-        try {
-          const keysToRemove = [];
-
-          for (let index = 0; index < localStorage.length; index += 1) {
-            const key = localStorage.key(index);
-            if (!key) continue;
-
-            if (/^wm_avg_v[123]_/.test(key)) {
-              keysToRemove.push(key);
-              continue;
-            }
-
-            if (!key.startsWith(CACHE_PREFIX)) continue;
-
-            const entry = readLocalValue(key);
-            const fetchedAt = Number(entry?.fetchedAt) || 0;
-
-            if (!fetchedAt || now - fetchedAt > CACHE_MAX_AGE) {
-              keysToRemove.push(key);
-            }
+      // Preserve prices previously fetched by our extension in this panel.
+      const legacy = readLocalValue('wikimasters-prices:cache:v1');
+      for (const [id, hit] of Object.entries(legacy || {})) {
+        if (!/^[0-9a-f-]{36}$/i.test(id) || !hit?.summary || !Number.isFinite(hit.time)) continue;
+        const existing = readLocalValue(cacheKey(id));
+        if (existing?.ok === true && Number(existing.fetchedAt) >= hit.time) continue;
+        const averages = {};
+        for (const [rarity, value] of Object.entries(hit.summary)) {
+          const average = value?.average;
+          if (average != null && average !== '' && typeof average !== 'boolean' && Number.isFinite(Number(average))) {
+            averages[rarity] = Number(average);
           }
-
-          keysToRemove.forEach((key) => localStorage.removeItem(key));
-          writeLocalValue(CACHE_CLEANUP_KEY, now);
-        } catch (error) {
-          console.debug('[WM Average] nettoyage cache ignoré', error);
         }
+        writeLocalValue(cacheKey(id), { fetchedAt: hit.time, ok: true, averages });
       }
 
       function isContextInvalidatedError(error) {
@@ -243,6 +226,12 @@
             );
           }
 
+          if (Array.isArray(meta.ownedCopies)) {
+            normalized.ownedCopies = [...new Map([
+              ...(sameBatch?.ownedCopies || []), ...meta.ownedCopies
+            ].map(copy => [copy.id, copy])).values()];
+          }
+
           // Seule la collection fournit ces champs : les autres sources ne doivent pas les effacer.
           if (typeof meta.starred === 'boolean') {
             normalized.starred = meta.starred || Boolean(sameBatch?.starred);
@@ -259,13 +248,13 @@
       function createSponsorNote() {
         const note = document.createElement('div');
         note.className = 'wm-sponsor-note';
-        note.append(document.createTextNode('bouton sponsorisé par '));
+        note.append(document.createTextNode('Projet d’origine : kzfamily · '));
 
         const link = document.createElement('a');
         link.href = 'https://www.twitch.tv/botkz';
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
-        link.textContent = 'https://www.twitch.tv/botkz';
+        link.textContent = 'botkz';
 
         note.append(link);
         return note;
@@ -273,7 +262,7 @@
 
 
       return {
-        CACHE_TTL, ERROR_CACHE_TTL, MAX_CONCURRENT, BULK_RARITY_LAST_LOAD_KEY,
+        VERSION, CACHE_TTL, ERROR_CACHE_TTL, MAX_CONCURRENT, BULK_RARITY_LAST_LOAD_KEY,
         ALL_COLLECTION_KEY, PULL_RECAP_ENABLED_KEY, PULL_STATS_KEY,
         AUTO_OPEN_ENABLED_KEY, AUTO_OPEN_NEXT_AT_KEY, AUTO_OPEN_SESSION_KEY,
         AUTO_OPEN_MIN_MINUTES_KEY, AUTO_OPEN_MAX_MINUTES_KEY,

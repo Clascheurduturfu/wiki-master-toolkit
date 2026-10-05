@@ -28,6 +28,10 @@
       function recordPullStats(cards) {
         if (!isFeatureEnabled('pullStats')) return;
         if (!Array.isArray(cards) || !cards.length) return;
+        if (deps.fileSync) {
+          deps.fileSync.recordPulls(cards).catch(error => console.error('[WM Sync] statistiques', error));
+          return;
+        }
     
         const stats = readPullStats();
     
@@ -134,6 +138,10 @@
         reset.textContent = 'Réinitialiser les statistiques';
         reset.addEventListener('click', () => {
           if (!confirm('Réinitialiser toutes les statistiques de tirage ?')) return;
+          if (deps.fileSync) {
+            deps.fileSync.resetPullStats().catch(error => console.error('[WM Sync] réinitialisation', error));
+            return;
+          }
           localStorage.removeItem(PULL_STATS_KEY);
           panel.dataset.wmStatsKey = '';
           renderPullStats();

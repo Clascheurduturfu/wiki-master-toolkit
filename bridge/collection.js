@@ -73,12 +73,53 @@
       }
 
       async function fetchCollectionPage(page, stats = false, { tagId = null, sort = 'rarity' } = {}) {
+        let attempt = 0;
         const tagQuery = tagId ? `&tag_id=${encodeURIComponent(tagId)}` : '';
-        return fetchJsonRetry(
-          `/api/my-collection?sort=${encodeURIComponent(sort)}${tagQuery}&page=${encodeURIComponent(page)}&stats=${stats ? 1 : 0}`,
-          { method: 'GET', credentials: 'include', headers: { accept: '*/*' } },
-          { label: `Collection page ${page}`, maxAttempts: 3, timeoutMs: 15000 }
-        );
+
+        while (true) {
+          attempt += 1;
+
+          try {
+            const response = await originalFetch(
+              `/api/my-collection?sort=${encodeURIComponent(sort)}${tagQuery}&page=${encodeURIComponent(page)}&stats=${stats ? 1 : 0}`,
+              {
+                method: 'GET',
+                credentials: 'include',
+                headers: { accept: '*/*' }
+              }
+            );
+
+            if (response.ok) {
+              return response.json();
+            }
+
+            const retryable = response.status >= 500 && response.status <= 599;
+            if (!retryable) {
+              throw new Error(`Collection page ${page}: HTTP ${response.status}`);
+            }
+
+            console.warn(
+              `[WM Average] Collection page ${page}: HTTP ${response.status}, retry ${attempt}`
+            );
+          } catch (error) {
+            const statusMatch = String(error?.message || '').match(/HTTP\s+(\d+)/);
+            const status = statusMatch ? Number(statusMatch[1]) : null;
+            const retryable =
+              status == null ||
+              (status >= 500 && status <= 599);
+
+            if (!retryable) {
+              throw error;
+            }
+
+            console.warn(
+              `[WM Average] Collection page ${page}: erreur réseau, retry ${attempt}`
+            );
+          }
+
+          const delayMs = Math.min(5000, 500 * (2 ** Math.min(attempt - 1, 4)));
+          await new Promise((resolve) => setTimeout(resolve, delayMs));
+        }
       }
 
       function dedupeCards(pages) {
@@ -98,6 +139,9 @@
               ].filter(Boolean));
 
               existing.ownedCardIds = [...ownershipIds];
+              existing.ownedCopies = [...new Map([
+                ...(existing.ownedCopies || []), ...(card.ownedCopies || [])
+              ].map(copy => [copy.id, copy])).values()];
               // Chaque exemplaire est une entrée distincte avec count = 1.
               existing.count = Math.max(
                 existing.count || 1,
@@ -129,21 +173,14 @@
           const pageSize = firstCards.length;
           const pages = [firstCards];
 
-          const hasReliableTotal = Number.isFinite(total) && total > 0 && pageSize > 0;
-          const maxPageExclusive = hasReliableTotal
-            ? Math.min(Math.ceil(total / pageSize), MAX_COLLECTION_PAGES)
-            : MAX_COLLECTION_PAGES;
+          const totalPages = Number.isFinite(total) && total > 0 && pageSize > 0
+            ? Math.ceil(total / pageSize)
+            : 1;
 
-          // Certaines réponses filtrées par étiquette n'exposent pas `total`.
-          // Dans ce cas, ne surtout pas supposer qu'il n'existe qu'une seule page
-          // (50 cartes) : on continue jusqu'à la première page incomplète/vide.
-          if (pageSize > 0) {
-            for (let page = 1; page < maxPageExclusive; page += 1) {
-              const cards = extractCards(await fetchCollectionPage(page, false, { tagId }));
-              pages.push(cards);
-
-              if (!cards.length || cards.length < pageSize) break;
-            }
+          for (let page = 1; page < Math.min(totalPages, MAX_COLLECTION_PAGES); page += 1) {
+            const cards = extractCards(await fetchCollectionPage(page, false, { tagId }));
+            pages.push(cards);
+            if (cards.length < pageSize) break;
           }
 
           window.dispatchEvent(new CustomEvent('wm-average-tag-cards', {

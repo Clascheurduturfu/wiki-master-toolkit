@@ -12,10 +12,10 @@
       function renderAll() {
         runtime.settings.ensureButton();
         runtime.themeTracker.render();
-        runtime.myBids.render();
 
         if (isCollectionPage()) {
           runtime.collectionBulk.ensureToolbar();
+          runtime.discard.ensureButton();
           runtime.collectionBulk.ensurePriceLegend();
           runtime.priceUi.renderVisibleCollectionCards();
         }
@@ -29,6 +29,7 @@
           runtime.packs.updateAutoOpenToggleUi();
           runtime.pullStats.renderPullStats();
           runtime.packs.renderPackRecap();
+          runtime.packs.restoreAcknowledgedConsent();
         }
 
         if (isTradesPage()) {
@@ -46,6 +47,8 @@
         runtime.compactMode.ensureCompactControl();
         runtime.cardExtras.renderCardExtras();
         runtime.extraTools.render();
+        runtime.fileSync.ensureButton();
+        runtime.workspaceUi.render();
       }
 
 
@@ -61,6 +64,7 @@
           isTradesPage() ||
           isGlobalCollectionPage() ||
           isGuildPage() ||
+          location.pathname === '/achievements' ||
           Boolean(document.querySelector('button[aria-label="Ouvrir la boutique WikiBidous"]')) ||
           Boolean(document.querySelector('button[aria-label="Notifications"]')) ||
           Boolean(document.querySelector('div[class*="glow-"] h3'))
@@ -101,13 +105,12 @@
 
         return Boolean(
           target?.closest?.(
-            '.wm-average-badge, .wm-tools-bar, .wm-modal-overlay, .wm-marketplace-average-wrap, ' +
+            '.wm-average-badge, .wm-tools-bar, .wm-workspace-toolbar, .wm-modal-overlay, .wm-marketplace-average-wrap, ' +
             '.wm-pulls-tools, .wm-pulls-info, .wm-pack-recap, .wm-trade-values-panel, ' +
             '.wm-trade-values-controls, #wm-open-all-overlay, .wm-pull-stats, ' +
             '.wm-wikipedia-card-button, .wm-missing-image-credit, .wm-missing-title-art, .wm-compact-tools, .wm-price-legend, ' +
             '.wm-auto-open-control, .wm-auto-open-help, .wm-settings-launch, .wm-settings-modal, ' +
-            '.wm-copy-card-button, .wm-trade-preview-card, #wm-theme-tracker-page, #wm-theme-tracker-nav, ' +
-            '#wm-my-bids-page, #wm-my-bids-nav'
+            '.wm-copy-card-button, .wm-trade-preview-card, #wm-theme-tracker-page, #wm-theme-tracker-nav'
           )
         );
       }
@@ -154,11 +157,14 @@
         }
       });
 
+      let started = false;
       function startObserver() {
         if (!document.body) {
-          requestAnimationFrame(startObserver);
+          document.addEventListener('DOMContentLoaded', startObserver, { once: true });
           return;
         }
+        if (started) return;
+        started = true;
 
         cleanupPriceCacheOnceDaily();
         attachMainObserver();

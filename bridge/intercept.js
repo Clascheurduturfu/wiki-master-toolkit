@@ -16,19 +16,15 @@
           captureSupabaseRequest(args[0], args[1] || {});
           captureGlobalCardsRequest(args[0], args[1] || {});
         } catch (_) {}
-        const input = args[0];
-        const url = typeof input === 'string' ? input : input?.url;
-        const method = args[1]?.method || input?.method || 'GET';
-        const fetchPromise = url && isPacksOpenApi(url) && method.toUpperCase() === 'POST'
-          ? runtime.packs.withOpeningLock(() => originalFetch(...args))
-          : originalFetch(...args);
+        const fetchPromise = originalFetch(...args);
 
         fetchPromise.then((response) => {
           try {
-            if (!response.ok) return;
             const input = args[0];
             const url = typeof input === 'string' ? input : input?.url;
-            if (url && isGlobalCardsApi(url)) {
+            if (url && response.ok && runtime.prices?.cardIdFromSummaryUrl(url)) {
+              response.clone().json().then(json => runtime.prices.captureSummaryResponse(url, json)).catch(() => {});
+            } else if (url && isGlobalCardsApi(url)) {
               if (response.ok) {
                 response.clone().json().then(emitGlobalCatalogue).catch(() => {});
                 if (getGlobalCollectionSummaryCardId(url)) emitGlobalCollectionInspectedCard(url);
@@ -81,14 +77,16 @@
               isGlobalCardsApi(this.__wmUrl) ||
               isTradesApi(this.__wmUrl) ||
               isMarketplaceDetailApi(this.__wmUrl) ||
-              isPacksOpenApi(this.__wmUrl)
+              isPacksOpenApi(this.__wmUrl) ||
+              runtime.prices?.cardIdFromSummaryUrl(this.__wmUrl)
             )
           ) {
             this.addEventListener('load', () => {
-              if (this.status < 200 || this.status >= 300) return;
               try {
                 const json = JSON.parse(this.responseText);
-                if (isGlobalCardsApi(this.__wmUrl)) {
+                if (this.status >= 200 && this.status < 300 && runtime.prices?.cardIdFromSummaryUrl(this.__wmUrl)) {
+                  runtime.prices.captureSummaryResponse(this.__wmUrl, json);
+                } else if (isGlobalCardsApi(this.__wmUrl)) {
                   emitGlobalCatalogue(json);
                   if (getGlobalCollectionSummaryCardId(this.__wmUrl)) {
                     emitGlobalCollectionInspectedCard(this.__wmUrl);

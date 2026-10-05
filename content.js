@@ -9,19 +9,23 @@
     'settings',
     'imageResolver',
     'priceUi',
+    'sharedPrices',
     'priceLoader',
+    'fileSync',
     'cardExtras',
     'pullStats',
     'compactMode',
     'trades',
     'modalUi',
     'packs',
+    'packVerification',
     'ranking',
     'collectionBulk',
+    'discard',
     'extraTools',
+    'activity',
+    'workspaceUi',
     'themeTracker',
-    'myBidsLogic',
-    'myBids',
     'app'
   ];
 
@@ -52,7 +56,9 @@
     MISSING_IMAGE_MISS_TTL: runtime.core.MISSING_IMAGE_MISS_TTL
   });
   runtime.priceUi = featureRegistry.priceUi.create(runtime);
+  runtime.sharedPrices = featureRegistry.sharedPrices.create(runtime);
   runtime.priceLoader = featureRegistry.priceLoader.create(runtime);
+  runtime.fileSync = featureRegistry.fileSync.create(runtime);
 
   runtime.cardExtras = featureRegistry.cardExtras.create({
     normalizeTitle: runtime.core.normalizeTitle,
@@ -69,7 +75,8 @@
     readLocalValue: runtime.core.readLocalValue,
     writeLocalValue: runtime.core.writeLocalValue,
     isPullsPage: runtime.core.isPullsPage,
-    isFeatureEnabled: runtime.settings.isEnabled
+    isFeatureEnabled: runtime.settings.isEnabled,
+    fileSync: runtime.fileSync
   });
 
   runtime.compactMode = featureRegistry.compactMode.create({
@@ -98,13 +105,15 @@
   });
 
   runtime.modalUi = featureRegistry.modalUi.create();
+  runtime.packVerification = featureRegistry.packVerification.create(runtime);
   runtime.packs = featureRegistry.packs.create(runtime);
   runtime.ranking = featureRegistry.ranking.create(runtime);
   runtime.collectionBulk = featureRegistry.collectionBulk.create(runtime);
+  runtime.discard = featureRegistry.discard.create(runtime);
   runtime.extraTools = featureRegistry.extraTools.create(runtime);
+  runtime.activity = featureRegistry.activity.create(runtime);
+  runtime.workspaceUi = featureRegistry.workspaceUi.create(runtime);
   runtime.themeTracker = featureRegistry.themeTracker.create(runtime);
-  runtime.myBidsLogic = featureRegistry.myBidsLogic.create();
-  runtime.myBids = featureRegistry.myBids.create(runtime);
   runtime.app = featureRegistry.app.create(runtime);
 
   runtime.app.startObserver();

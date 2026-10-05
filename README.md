@@ -1,4 +1,12 @@
+# Wiki Master Toolkit · v1.0
+
+Fork indépendant de WikiMastersTools-kzfamily, avec les adaptations Atlas et le correctif des notifications audio. Les prix et statistiques existants sont conservés. Voir [ATTRIBUTION.md](ATTRIBUTION.md), [PRIVACY.md](PRIVACY.md) et le dossier `../releases/wiki-master-toolkit-1.0/` pour le brouillon de publication.
+
+La documentation d’origine ci-dessous est conservée pour attribution. Les anciens noms et numéros décrivent les versions précédentes.
+
 PATCH NOTE EN BAS
+
+> This folder is the local **Atlas v4.30.0** adaptation of the installed v4.27.7 extension. See [ATLAS-FORK.md](ATLAS-FORK.md) for permanent caching, automatic new-card pricing, local folder sync on Windows/Mac, migration and verification, and [DISCARD.md](DISCARD.md) for discard by price across all collection pages. See [ACTIVITY.md](ACTIVITY.md) for auctions, saved watch links, achievement discovery/claim-all and the interface rebuild. See [SHARED-PRICES.md](SHARED-PRICES.md) for the local twelve-panel database and mid-batch verification pause/resume in v4.30.0. The upstream documentation below is preserved for attribution and describes the original release.
 
 [Chrome Web Store](https://chromewebstore.google.com/detail/wikimasters-prix-moyen-co/pkcnhclbagpfmlmolfcgedcmbccffgci)
 
@@ -48,26 +56,10 @@ Ou retélécharger manuellement et remplacer le dossier.
 
 Puis cliquer sur **Recharger** dans `chrome://extensions/` et faire un F5 sur WikiMasters.
 
-## Tests de régression
-
-Avec Node.js 22 ou plus récent, sans dépendance à installer :
-
-```bash
-node --test tests/*.test.js
-```
-
-Les tests couvrent les prix par rareté, les exemplaires en double, le cache et la file de
-chargement, les délais réseau, les limitations du serveur, l'arrêt des paquets et les
-ouvertures concurrentes entre onglets. Les réponses réseau sont simulées ; aucun
-paquet réel n'est consommé par ces tests.
-
 ## Patch note
 
 *Heure de Paris*
 
-- **05/10/2026 — v4.29.1** — Interface des paquets simplifiée : suppression des boutons « Arrêter » et « Revoir le dernier récap » ; compteur discret « 3/5 ouverts » pendant l’ouverture, conservé pendant les attentes.
-- **05/10/2026 — v4.29** — Correction des prix sur les exemplaires en double et des moyennes d'une autre rareté ; délais réseau et limitations de requêtes gérés ; ouvertures protégées entre onglets ; bouton « Arrêter » et récapitulatif récupérable après rechargement. L'arrêt de l'ouverture automatique interrompt le lot après le paquet en cours. Les vérifications du site doivent être validées manuellement. Les anciens prix en cache seront rechargés pour éliminer les moyennes incorrectes.
-- **05/10/2026** — Ajout de la page « Mes enchères » avec suivi, surenchère en un clic et alerte sonore, désactivable dans les paramètres.
 - **30/09/2026** — Ajout de la page « Familles ».
 - **28/09/2026** — Nouveaux outils pour les cartes, les échanges et les notifications, avec davantage de réglages pour les paquets.
 - **27/09/2026** — Mise à jour du style et des performances des cartes.

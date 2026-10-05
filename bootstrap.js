@@ -158,66 +158,8 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
       document.documentElement?.classList.add('wm-premium-cards-enabled');
     }
 
-    const extensionRuntime = getExtensionRuntime();
-    if (!extensionRuntime?.getURL) return;
-    document.documentElement.dataset.wmExtensionVersion = extensionRuntime.getManifest?.().version || 'unknown';
-
-    const paths = [
-      'bridge/core.js',
-      'bridge/collection.js',
-      'bridge/packs.js',
-      'bridge/intercept.js',
-      'bridge/marketplace.js',
-      'bridge/prices.js',
-      'page-bridge.js',
-      'features/core.js',
-      'features/settings.js',
-      'features/image-resolver.js',
-      'features/price-ui.js',
-      'features/price-loader.js',
-      'features/card-extras.js',
-      'features/pull-stats.js',
-      'features/compact-mode.js',
-      'features/trades.js',
-      'features/modal-ui.js',
-      'features/packs.js',
-      'features/ranking.js',
-      'features/collection-bulk.js',
-      'features/extra-tools.js',
-      'features/theme-tracker.js',
-      'features/my-bids-logic.js',
-      'features/my-bids.js',
-      'features/app.js',
-      'content.js'
-    ];
-
-    const parent = document.head || document.documentElement;
-
-    const injectScript = (path) => new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.src = extensionRuntime.getURL(path);
-      script.async = false;
-      script.dataset.wmAverageInjected = '1';
-
-      script.addEventListener('load', () => resolve(), { once: true });
-      script.addEventListener('error', () => {
-        reject(new Error(`Impossible de charger ${path}`));
-      }, { once: true });
-
-      parent.appendChild(script);
-    });
-
-    (async () => {
-      try {
-        for (const path of paths) {
-          await injectScript(path);
-        }
-      } catch (error) {
-        // Évite de laisser les cartes masquées si l'initialisation de l'extension échoue.
-        document.documentElement?.classList.remove('wm-premium-cards-enabled');
-        console.error('[WM Average] chargement séquentiel interrompu', error);
-      }
-    })();
+    // Page modules are loaded in MAIN world in dependency order by the manifest.
+    // Only the clipboard and semantic-fetch bridge needs the extension context.
   })();
 }
 

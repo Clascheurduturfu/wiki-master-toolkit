@@ -1,8 +1,8 @@
-# WikiMastersTools - Atlas v4.30.0
+# Wiki Master Toolkit — Atlas integration
 
-Local adaptation of the installed WikiMastersTools-kzfamily v4.27.7 by kzfamily. The original README and PRIVACY documents remain with the source. This is an unpacked local fork; it has its own extension identity and no Chrome Web Store updater.
+Wiki Master Toolkit 1.0 is the independent fork of WikiMastersTools-kzfamily by qkerman / the kzfamily. The upstream README is preserved in docs/UPSTREAM-README.fr.md; PRIVACY.md describes this fork. This document preserves implementation and migration notes from the internal Atlas v4.30.0 adaptation. Those historical numbers are distinct from the public Toolkit version.
 
-Atlas loads this folder automatically in all twelve isolated panel sessions. Restart Atlas to load updated files. For Chrome, reload the unpacked extension in `chrome://extensions`, then refresh WikiMasters. The collection toolbar shows **Atlas v4.30.0**. The original extension written for this project, including its tests and documentation, is preserved at `../backups/extension-ours-v1.2.1/`.
+An Atlas installation loads its bundled extension in the isolated panel sessions. Updating this standalone repository does not update an installed Atlas application. For Chrome, reload the unpacked extension in `chrome://extensions`, then refresh WikiMasters. The current toolbar shows the Toolkit version. The original pre-fork extension remains in the private development project's backups; that backup is not included in this repository.
 
 ## Auctions, achievements and interface
 

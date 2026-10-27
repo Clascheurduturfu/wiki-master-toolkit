@@ -1,6 +1,6 @@
 # Politique de confidentialité — Wiki Master Toolkit
 
-Version 1.0 · Dernière mise à jour : 5 octobre 2026
+Version 1.0.1 RC1 · Dernière mise à jour : 27 octobre 2026
 
 Wiki Master Toolkit est un fork indépendant de WikiMastersTools-kzfamily. Cette politique décrit le fork ; les auteurs du projet d’origine ne sont pas les responsables de sa publication.
 
@@ -20,7 +20,7 @@ Dans Atlas uniquement, les prix de marché réussis sont également partagés en
 
 ## Services contactés
 
-WikiMasters et son service Supabase reçoivent les requêtes nécessaires aux cartes, prix, enchères, paquets et succès. Wikipédia, Wikidata et Wikimedia peuvent recevoir des titres publics ou requêtes publiques pour les illustrations et familles ; ces requêtes sémantiques n’incluent pas les cookies WikiMasters. Pour certaines illustrations Pokémon, une recherche publique peut également contacter PokéAPI et charger l’image renvoyée par ce service, sans transmettre les jetons WikiMasters. Un widget de vérification demandé par WikiMasters peut contacter Cloudflare Turnstile ; son jeton reste temporaire et est envoyé seulement à l’API de vérification du site. Les liens externes explicites, notamment le crédit du projet d’origine, sont ouverts lorsqu’on clique dessus.
+WikiMasters et son service Supabase reçoivent les requêtes nécessaires aux cartes, prix, enchères, paquets et succès. Wikipédia, Wikidata et Wikimedia peuvent recevoir des titres publics ou requêtes publiques pour les illustrations et familles ; ces requêtes sémantiques n’incluent pas les cookies WikiMasters. Pour certaines illustrations Pokémon, une recherche publique peut également contacter PokéAPI et charger l’image renvoyée par ce service, sans transmettre les jetons WikiMasters. Les vérifications humaines sont effectuées dans l’interface propre de WikiMasters, qui peut contacter Cloudflare. L’extension ne charge aucun script Turnstile, ne crée aucun widget de vérification et ne lit ni ne transmet ses jetons. Elle attend votre clic pour reprendre un lot en pause ; le serveur du site décide si l’ouverture est autorisée. Les liens externes explicites, notamment le crédit du projet d’origine, sont ouverts lorsqu’on clique dessus.
 
 ## Actions et presse-papiers
 

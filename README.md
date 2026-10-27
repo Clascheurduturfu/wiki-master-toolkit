@@ -2,7 +2,7 @@
 
 **Les prix, la collection, les paquets et le marché WikiMasters dans une seule interface.**
 
-![Version 1.0](https://img.shields.io/badge/version-1.0-a78bfa)
+![Version 1.0.1 RC1](https://img.shields.io/badge/version-1.0.1_RC1-a78bfa)
 ![Chrome Manifest V3](https://img.shields.io/badge/Chrome-Manifest_V3-34d399)
 
 Fork indépendant de [WikiMastersTools-kzfamily](https://github.com/qkerman/WikiMastersTools-kzfamily), créé par **qkerman / la kzfamily**. Le Toolkit reprend leurs outils et ajoute une interface unifiée, un cache permanent des prix, la synchronisation locale et les adaptations pour Atlas. Il n’est pas affilié à WikiMasters.
@@ -16,7 +16,7 @@ Fork indépendant de [WikiMastersTools-kzfamily](https://github.com/qkerman/Wiki
 | **Prix moyens** | Moyenne correspondant à la rareté de chaque carte. Chargement automatique des prix manquants, réponses réussies conservées sans expiration. |
 | **Collection** | Vue des cartes les plus chères et chargement des prix par rareté, au-delà des 50 cartes d’une page. |
 | **Défausse** | Sélection par prix maximal, filtre C / PC et aperçu illustré. Favoris, brillantes, cartes en vente et en échange protégés. Confirmation avant toute défausse. |
-| **Paquets** | Ouverture groupée, ouverture automatique facultative, récapitulatif et statistiques par rareté. Pause pour résoudre les vérifications humaines. |
+| **Paquets** | Ouverture groupée, ouverture automatique facultative, récapitulatif et statistiques par rareté. Pause pour résoudre les vérifications dans l’interface du site, puis reprise par un clic. |
 | **Mes enchères** | Ventes, enchères et gains récents, avec images et moyennes actualisées. Suivi par lien sans avoir misé. |
 | **Succès** | Recherche des nouveaux succès et bouton pour réclamer les récompenses disponibles. |
 | **Sauvegardes et synchronisation** | Export / import et partage des prix et statistiques via un dossier local choisi. |
@@ -103,7 +103,11 @@ Aucune compilation n’est nécessaire. Avec **Node.js 22 ou plus récent**, les
 node --test tests/*.test.cjs tests/*.test.js
 ```
 
-Les propositions se font sur une branche dédiée et par pull request. **`toolkit`** contient cette version ; **`main`** conserve l’historique d’origine. Les notes techniques peuvent utiliser les anciens numéros internes Atlas, distincts de la version publique **1.0**.
+Les propositions se font sur une branche dédiée et par pull request. **`toolkit`** contient cette version ; **`main`** conserve l’historique d’origine. Les notes techniques peuvent utiliser les anciens numéros internes Atlas, distincts de la version publique **1.0.1 RC1**.
+
+### Correctif 1.0.1 RC1 — 27 octobre 2026
+
+Suppression du chargeur Turnstile distant signalé par le Chrome Web Store (Blue Argon). Lors d’une vérification, le Toolkit garde le lot en pause et laisse les contrôles WikiMasters accessibles. Terminer la vérification sur le site, puis cliquer sur **Vérification terminée · reprendre**. Le site peut ouvrir un paquet lors de cette action native ; il reste dans la collection. Le Toolkit ne manipule pas le widget ou ses jetons. Les cartes déjà obtenues et le cache existant sont conservés.
 
 ## Origine et autorisation
 

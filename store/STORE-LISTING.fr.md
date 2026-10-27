@@ -1,6 +1,6 @@
 # Wiki Master Toolkit
 
-Version : 1.0
+Version du paquet de mise à jour : 1.0.1 (libellé visible 1.0.1 RC1)
 Langue : français
 Catégorie : Outils
 
@@ -44,7 +44,7 @@ Wiki Master Toolkit est un fork indépendant de WikiMastersTools-kzfamily, cré�
 
 Cette version ajoute notamment le cache permanent, la synchronisation locale, le suivi d’enchères, les outils de défausse et une interface réorganisée. Elle n’est pas affiliée à WikiMasters et ne constitue pas une publication officielle du projet d’origine.
 
-Code du fork et support : https://github.com/Clascheurduturfu/wiki-master-toolkit/tree/codex/wiki-master-toolkit-1.0
+Code du fork et support : https://github.com/Clascheurduturfu/wiki-master-toolkit
 
 ## Assets
 
@@ -53,7 +53,11 @@ Code du fork et support : https://github.com/Clascheurduturfu/wiki-master-toolki
 • Captures : auction-panel-1280x800.png, achievement-panel-1280x800.png, discard-preview-1280x800.png.
 • Les captures montrent l’interface réelle avec des données d’exemple, identifiées dans l’image.
 
-## État du brouillon
+## Mise à jour du 27 octobre 2026
+
+Le Chrome Web Store a envoyé un avertissement Blue Argon pour le chargeur Turnstile de la version 1.0. La version 1.0.1 RC1 supprime ce chargeur et délègue toute vérification humaine à l’interface native du site, avec reprise explicite du lot. Voir [REVIEW-1.0.1.fr.md](REVIEW-1.0.1.fr.md). Un nouveau paquet doit être téléversé et approuvé par le Store ; les notes ci-dessous décrivent le brouillon historique et ne prouvent pas l’état actuel du tableau de bord.
+
+## Historique du brouillon du 5 octobre 2026
 
 Le 5 octobre 2026, le brouillon a été créé et enregistré via le contrôle natif de Chrome sous l’éditeur Xinolab Corp. Le paquet version 1.0, la description française et les crédits, la catégorie Outils, la langue française, l’icône, trois captures, le visuel promotionnel, les liens du fork et du support, les déclarations de confidentialité et les instructions de test sont enregistrés. Les sections ont été rouvertes pour vérifier leur conservation. Aucun envoi pour examen et aucune publication.
 

@@ -198,3 +198,37 @@ body.wm-dialog-open { overflow: hidden !important; }
 @media (prefers-reduced-motion: reduce) {
   .wm-modal *, .wm-workspace-toolbar * { transition: none !important; }
 }
+.wm-native-verification-active .wm-modal-overlay {
+  display: none !important;
+}
+
+body.wm-native-verification-active {
+  overflow: auto !important;
+}
+
+.wm-verification-notice {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2147483647;
+  width: min(380px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  box-sizing: border-box;
+  padding: 18px;
+  border: 1px solid #756293;
+  border-radius: 16px;
+  background: #171b20;
+  color: #f5f3ff;
+  box-shadow: 0 12px 48px #0008;
+  font: 14px/1.5 system-ui, sans-serif;
+}
+
+.wm-verification-notice h2 {
+  margin: 0 0 10px;
+  font-size: 17px;
+}
+
+.wm-verification-notice .wm-modal-actions {
+  flex-wrap: wrap;
+}

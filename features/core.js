@@ -3,7 +3,7 @@
 
   registry.core = {
     create() {
-      const VERSION = '1.0';
+      const VERSION = '1.0.1 RC1';
       const CACHE_TTL = Infinity;
       const ERROR_CACHE_TTL = 60 * 1000;
       const CACHE_PREFIX = 'wm_avg_v3_';

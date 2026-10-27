@@ -5,7 +5,10 @@
     create() {
       const adopted = new WeakSet();
       let dialogCounter = 0;
-      function topOverlay() { return [...document.querySelectorAll('.wm-modal-overlay')].at(-1); }
+      function topOverlay() {
+        if (document.body.classList.contains('wm-native-verification-active')) return null;
+        return [...document.querySelectorAll('.wm-modal-overlay')].at(-1);
+      }
       function focusables(modal) {
         return [...modal.querySelectorAll('button, a[href], input, select, textarea, summary, [tabindex="0"]')]
           .filter(node => !node.disabled && !node.hidden && node.getClientRects().length);

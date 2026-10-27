@@ -28,11 +28,11 @@ Pas de collecte générale de l’historique de navigation, d’adresses e-mail,
 
 ## Code distant : état actuel à déclarer
 
-Oui : chargement facultatif du script officiel https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit, uniquement lorsque WikiMasters refuse une ouverture avec human_verification_required. Le module features/pack-verification.js est fourni dans le paquet et exécuté dans le contexte MAIN de la page WikiMasters, sans accès direct aux API privilégiées de l’extension. Il affiche la vérification à effectuer par l’utilisateur et transmet seulement le jeton temporaire à l’API native /api/human-check de WikiMasters. Aucun contournement de CAPTCHA ni code fonctionnel du toolkit téléchargé à distance. Le pont vers le contexte extension se limite aux requêtes publiques sur une liste d’hôtes et à l’écriture du presse-papiers. Nous déclarons ce chargement et demandons son évaluation au titre de l’exception pour les contextes isolés des API d’extension ; l’applicabilité de cette exception n’est pas présumée acquise. Règle : https://developer.chrome.com/docs/webstore/program-policies/mv3-requirements
+Non pour la version 1.0.1 RC1 : le chargeur Turnstile de la version 1.0 a été supprimé après l’avertissement Blue Argon du 27 octobre 2026. L’extension ne crée plus de widget et ne manipule aucun jeton de vérification. Elle met le lot en pause et laisse l’utilisateur terminer le contrôle dans l’interface native du site, puis cliquer pour reprendre. L’ensemble de la logique du Toolkit est fourni dans le paquet ; les requêtes distantes servent uniquement aux données et aux actions du site. Aucune exception au règlement sur le code distant n’est demandée. Voir REVIEW-1.0.1.fr.md et https://developer.chrome.com/docs/webstore/program-policies/mv3-requirements/ .
 
 ## Politique de confidentialité
 
-Politique publique du fork : https://github.com/Clascheurduturfu/wiki-master-toolkit/blob/codex/wiki-master-toolkit-1.0/PRIVACY.md . La même politique est fournie dans privacy-policy.html. Ne pas utiliser la politique de l’auteur d’origine comme si elle était celle du nouveau développeur.
+Politique publique du fork : https://github.com/Clascheurduturfu/wiki-master-toolkit/blob/toolkit/PRIVACY.md . La même politique est fournie dans privacy-policy.html. Ne pas utiliser la politique de l’auteur d’origine comme si elle était celle du nouveau développeur.
 
 ## Instructions de test proposées
 

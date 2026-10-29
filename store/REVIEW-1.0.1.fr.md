@@ -26,3 +26,11 @@ Les tests hors ligne couvrent pause/reprise, annulation, résultats partiels, ab
 Pour cette mise à jour, l’extension n’utilise plus de code hébergé à distance pour ses fonctions. Les échanges d’API sont des données et les vérifications sont exécutées par le site dans sa propre interface. Remplacer l’ancienne explication demandant une exception Turnstile dans la fiche de confidentialité du tableau de bord.
 
 Après téléversement du nouveau ZIP, soumettre la mise à jour pour examen. Un fichier local ou une modification GitHub ne met pas à jour la version distribuée par le Store ; seul le tableau de bord peut confirmer l’envoi et l’approbation.
+
+## Soumission vérifiée — 29 octobre 2026
+
+Le CLI connecté au compte éditeur existant a téléversé le ZIP 1.0.1 puis soumis la mise à jour pour une diffusion à 100 % après approbation. La lecture de statut officielle a confirmé : version publiée 1.0 (`PUBLISHED`), version soumise 1.0.1 (`PENDING_REVIEW`), avertissement toujours actif (`warned: true`). Il ne s’agit pas encore d’une approbation ni d’une mise en ligne de 1.0.1.
+
+ZIP soumis : `wiki-master-toolkit-1.0.1-rc1.zip`, 49 fichiers, SHA256 `19f4602ae7490639641333765ec251565ead52ef9620843f29eef7d7f27483e3`. Les six tests ciblés ont réussi avant le téléversement. Le manifeste numérique est 1.0.1 et le libellé visible reste 1.0.1 RC1.
+
+Le contrôle natif du navigateur a refusé l’accès avec « Local browser use is disabled in Work settings ». La déclaration de code distant dans le tableau de bord n’a donc pas été modifiée ni vérifiée pendant cette soumission. Remplacer manuellement l’ancienne justification Turnstile par « Non, je n’utilise pas de code distant » et utiliser la politique actuelle de la branche `toolkit`, si ces champs n’ont pas déjà été actualisés. Le CLI/API utilisé ne permet pas de modifier ces champs de fiche.
